@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nova OS · Oficina Prime</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main>
+    <div class="cabecalho">
+      <div>
+        <h1>Abrir ordem de serviço</h1>
+        <p class="sub">US01 — o atendente registra o atendimento do veículo do cliente.</p>
+      </div>
+    </div>
+
+    <div id="erros"></div>
+
+    <form id="form-os" class="cartao" novalidate>
+      <fieldset>
+        <legend>1. Atendimento</legend>
+        <div class="grade">
+          <label>Atendente responsável <select id="atendente"></select></label>
+          <label>Cliente <select id="cliente"></select></label>
+          <label>Veículo <select id="veiculo"></select></label>
+          <label>Km de entrada
+            <input type="number" id="km" min="0" step="1">
+            <small id="km-dica" class="dica"></small>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. Serviços solicitados</legend>
+        <div class="opcoes" id="servicos"></div>
+        <p class="total">Valor estimado: <b id="total">R$ 0,00</b></p>
+      </fieldset>
+
+      <fieldset>
+        <legend>3. Mecânicos responsáveis</legend>
+        <div class="opcoes" id="mecanicos"></div>
+      </fieldset>
+
+      <div class="acoes">
+        <a href="index.html" class="botao secundario">Cancelar</a>
+        <button type="submit" class="botao">Abrir ordem de serviço</button>
+      </div>
+    </form>
+  </main>
+
+  <script src="js/dados.js"></script>
+  <script src="js/regras.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/nova-os.js"></script>
+</body>
+</html>
