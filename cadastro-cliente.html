@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cadastrar cliente · Oficina Prime</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main>
+    <div class="cabecalho">
+      <div>
+        <h1>Cadastrar cliente e veículos</h1>
+        <p class="sub">US04 — o atendente cadastra o cliente e seus veículos para poder abrir ordens de serviço.</p>
+      </div>
+    </div>
+
+    <div id="erros"></div>
+
+    <form id="form-cliente" class="cartao" novalidate>
+      <fieldset>
+        <legend>1. Dados do cliente</legend>
+        <div class="grade">
+          <label>Nome <input type="text" id="nome" autocomplete="off"></label>
+          <label>CPF <input type="text" id="cpf" inputmode="numeric" placeholder="000.000.000-00" autocomplete="off"></label>
+          <label>Telefone <input type="tel" id="telefone" placeholder="(83) 98888-0000" autocomplete="off"></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. Veículos do cliente</legend>
+        <div id="veiculos"></div>
+        <button type="button" class="botao secundario" id="add-veiculo">+ Adicionar outro veículo</button>
+      </fieldset>
+
+      <div class="acoes">
+        <a href="index.html" class="botao secundario">Cancelar</a>
+        <button type="submit" class="botao">Cadastrar cliente</button>
+      </div>
+    </form>
+  </main>
+
+  <script src="js/dados.js"></script>
+  <script src="js/regras.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/cadastro-cliente.js"></script>
+</body>
+</html>
