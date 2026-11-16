@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ordens em andamento · Oficina Prime</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main>
+    <div class="cabecalho">
+      <div>
+        <h1>Ordens de serviço em andamento</h1>
+        <p class="sub">Atendimentos com status <b>Aberta</b> ou <b>Em execução</b> nesta unidade.</p>
+      </div>
+      <div class="contador"><span id="qtd">0</span> em andamento</div>
+    </div>
+    <div id="conteudo"></div>
+  </main>
+
+  <script src="js/dados.js"></script>
+  <script src="js/regras.js"></script>
+  <script src="js/layout.js"></script>
+  <script>
+    montarLayout('lista');
+    mostrarAviso();
+    const db = carregar();
+    const ordens = listarEmAndamento(db);
+    document.getElementById('qtd').textContent = ordens.length;
+
+    const alvo = document.getElementById('conteudo');
+    if (ordens.length === 0) {
+      alvo.innerHTML = '<p class="vazio">Nenhuma ordem em andamento. <a href="nova-os.html">Abrir uma nova OS</a>.</p>';
+    } else {
+      alvo.innerHTML = `
+        <div class="tabela-wrap"><table>
+          <thead><tr><th>OS</th><th>Abertura</th><th>Veículo</th><th>Cliente</th><th>Atendente</th>
+                     <th class="num">Valor estimado</th><th>Status</th></tr></thead>
+          <tbody>${ordens.map((d) => `
+            <tr>
+              <td><a href="os.html?id=${d.os.id_os}">#${d.os.id_os}</a></td>
+              <td>${fmtData(d.os.data_abertura)}</td>
+              <td><span class="placa">${esc(d.veiculo.placa)}</span> ${esc(d.veiculo.marca)} ${esc(d.veiculo.modelo)}</td>
+              <td>${esc(d.cliente.nome)}</td>
+              <td>${esc(d.atendente.nome)}</td>
+              <td class="num">${fmtMoeda(d.total)}</td>
+              <td><span class="status ${d.os.status === 'Aberta' ? 'aberta' : 'exec'}">${d.os.status}</span></td>
+            </tr>`).join('')}
+          </tbody>
+        </table></div>`;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ordem de serviço · Oficina Prime</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main id="conteudo"></main>
+
+  <script src="js/dados.js"></script>
+  <script src="js/regras.js"></script>
+  <script src="js/layout.js"></script>
+  <script>
+    montarLayout('detalhe');
+    const db = carregar();
+    const id = Number(new URLSearchParams(location.search).get('id'));
+    const d = detalharOrdem(db, id);
+    const main = document.getElementById('conteudo');
+
+    if (!d) {
+      main.innerHTML = '<p>OS não encontrada. <a href="index.html">Voltar</a></p>';
+    } else {
+      document.title = `OS #${d.os.id_os} · Oficina Prime`;
+      main.innerHTML = `
+        <div class="cabecalho">
+          <div>
+            <h1>Ordem de serviço #${d.os.id_os}</h1>
+            <p class="sub">${esc(db.unidade.nome)} · aberta em ${fmtData(d.os.data_abertura)} por ${esc(d.atendente.nome)}</p>
+          </div>
+          <span class="status grande ${d.os.status === 'Aberta' ? 'aberta' : 'exec'}">${d.os.status}</span>
+        </div>
+        <div class="detalhe">
+          <section class="cartao">
+            <h2>Veículo</h2>
+            <p><span class="placa">${esc(d.veiculo.placa)}</span></p>
+            <p>${esc(d.veiculo.marca)} ${esc(d.veiculo.modelo)} · ${d.veiculo.ano}</p>
+            <p class="sub">Km de entrada: ${fmtKm(d.os.km_entrada)}</p>
+          </section>
+          <section class="cartao">
+            <h2>Cliente</h2>
+            <p><b>${esc(d.cliente.nome)}</b></p>
+            <p class="sub">${esc(d.cliente.telefone)}</p>
+          </section>
+          <section class="cartao">
+            <h2>Mecânicos</h2>
+            ${d.mecanicos.map((m) => `<p><b>${esc(m.nome)}</b> <span class="sub">· ${esc(m.especialidade)}</span></p>`).join('')}
+          </section>
+        </div>
+        <section class="cartao">
+          <h2>Serviços</h2>
+          <table>
+            <thead><tr><th>Serviço</th><th>Setor</th><th class="num">Valor</th></tr></thead>
+            <tbody>${d.servicos.map((s) => `
+              <tr><td>${esc(s.descricao)}</td><td>${esc(s.setor)}</td><td class="num">${fmtMoeda(s.valor)}</td></tr>`).join('')}
+            </tbody>
+            <tfoot><tr><td colspan="2">Valor estimado (serviços)</td><td class="num">${fmtMoeda(d.total)}</td></tr></tfoot>
+          </table>
+        </section>
+        <div class="acoes"><a href="index.html" class="botao secundario">← Voltar para ordens em andamento</a></div>`;
+      mostrarAviso();
+    }
+  </script>
+</body>
+</html>
