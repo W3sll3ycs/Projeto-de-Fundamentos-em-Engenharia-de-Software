@@ -27,15 +27,15 @@
         <div class="cabecalho">
           <div>
             <h1>Ordem de serviço #${d.os.id_os}</h1>
-            <p class="sub">${esc(db.unidade.nome)} · aberta em ${fmtData(d.os.data_abertura)} por ${esc(d.atendente.nome)}</p>
+            <p class="sub">${esc(db.unidade.nome)} · aberta em ${fmtData(d.os.data_abertura)} por ${esc(d.atendente.nome)}${d.os.data_conclusao ? ` · concluída em ${fmtData(d.os.data_conclusao)}` : ''}</p>
           </div>
-          <span class="status grande ${d.os.status === 'Aberta' ? 'aberta' : 'exec'}">${d.os.status}</span>
+          <span class="status grande ${classeStatus(d.os.status)}">${d.os.status}</span>
         </div>
         <div class="detalhe">
           <section class="cartao">
             <h2>Veículo</h2>
             <p><span class="placa">${esc(d.veiculo.placa)}</span></p>
-            <p>${esc(d.veiculo.marca)} ${esc(d.veiculo.modelo)} · ${d.veiculo.ano}</p>
+            <p>${esc(d.veiculo.marca)} ${esc(d.veiculo.modelo)}${d.veiculo.ano ? ` · ${d.veiculo.ano}` : ''}</p>
             <p class="sub">Km de entrada: ${fmtKm(d.os.km_entrada)}</p>
           </section>
           <section class="cartao">
@@ -58,8 +58,42 @@
             <tfoot><tr><td colspan="2">Valor estimado (serviços)</td><td class="num">${fmtMoeda(d.total)}</td></tr></tfoot>
           </table>
         </section>
+        <section class="cartao" id="bloco-status"></section>
         <div class="acoes"><a href="index.html" class="botao secundario">← Voltar para ordens em andamento</a></div>`;
+      montarBloco();
       mostrarAviso();
+    }
+
+    // US07 — o mecânico responsável avança o status da OS
+    function montarBloco() {
+      const bloco = document.getElementById('bloco-status');
+      const proximo = proximoStatus(d.os.status);
+      if (!proximo) {
+        bloco.innerHTML = `<h2>Status</h2><p>OS concluída${d.os.data_conclusao ? ` em ${fmtData(d.os.data_conclusao)}` : ''}. O veículo está pronto para entrega.</p>`;
+        return;
+      }
+      bloco.innerHTML = `
+        <h2>Atualizar status</h2>
+        <div id="erros-status"></div>
+        <div class="linha-status">
+          <label>Mecânico responsável
+            <select id="mec-status">
+              <option value="">Selecione…</option>
+              ${db.mecanicos.map((m) => `<option value="${m.id_funcionario}">${esc(m.nome)}</option>`).join('')}
+            </select>
+          </label>
+          <button type="button" class="botao" id="btn-status">Mudar para “${proximo}”</button>
+        </div>`;
+      document.getElementById('btn-status').addEventListener('click', () => {
+        const r = alterarStatusOrdem(db, d.os.id_os, Number(document.getElementById('mec-status').value) || null, proximo);
+        if (!r.ok) {
+          document.getElementById('erros-status').innerHTML = `<div class="alerta erro"><ul>${r.erros.map((m) => `<li>${esc(m)}</li>`).join('')}</ul></div>`;
+          return;
+        }
+        salvar(db);
+        avisar(`Status da OS nº ${d.os.id_os} alterado para “${r.status}”.`);
+        location.reload();
+      });
     }
   </script>
 </body>

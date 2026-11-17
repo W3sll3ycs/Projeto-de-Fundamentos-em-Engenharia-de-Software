@@ -44,7 +44,7 @@
               <td>${esc(d.cliente.nome)}</td>
               <td>${esc(d.atendente.nome)}</td>
               <td class="num">${fmtMoeda(d.total)}</td>
-              <td><span class="status ${d.os.status === 'Aberta' ? 'aberta' : 'exec'}">${d.os.status}</span></td>
+              <td><span class="status ${classeStatus(d.os.status)}">${d.os.status}</span></td>
             </tr>`).join('')}
           </tbody>
         </table></div>`;
