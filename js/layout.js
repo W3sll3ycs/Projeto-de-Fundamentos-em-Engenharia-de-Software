@@ -9,12 +9,13 @@ function montarLayout(paginaAtiva) {
         </a>
         <nav>
           <a href="index.html" class="${paginaAtiva === 'lista' ? 'ativo' : ''}">Ordens em andamento</a>
+          <a href="cadastro-cliente.html" class="${paginaAtiva === 'cliente' ? 'ativo' : ''}">Cadastrar cliente</a>
           <a href="nova-os.html" class="botao">+ Nova OS</a>
         </nav>
       </div>
     </header>`);
   document.body.insertAdjacentHTML('beforeend', `
-    <footer>Protótipo · US01 — Abrir ordem de serviço · Atividade 03 (XP) ·
+    <footer>Protótipo · US01, US04 e US07 · Atividade 03 (XP) ·
       <a href="testes.html">testes</a> ·
       <a href="#" id="resetar">restaurar dados de exemplo</a></footer>`);
   document.getElementById('resetar').addEventListener('click', (e) => {

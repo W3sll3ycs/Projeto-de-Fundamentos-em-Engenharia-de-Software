@@ -49,6 +49,9 @@ const marcados = (nome) =>
 $('cliente').addEventListener('change', atualizarVeiculos);
 $('veiculo').addEventListener('change', atualizarDicaKm);
 document.querySelectorAll('input[name=servicos]').forEach((c) => c.addEventListener('change', atualizarTotal));
+// Vindo do cadastro de cliente (US04): já deixa o cliente selecionado
+const clienteInicial = new URLSearchParams(location.search).get('cliente');
+if (clienteInicial && db.clientes.some((c) => c.id_cliente === Number(clienteInicial))) $('cliente').value = clienteInicial;
 atualizarVeiculos();
 
 $('form-os').addEventListener('submit', (e) => {

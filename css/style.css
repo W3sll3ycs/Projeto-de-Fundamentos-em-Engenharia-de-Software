@@ -48,7 +48,7 @@ fieldset { border: 0; padding: 0; margin: 0 0 22px; }
 legend { font-weight: 700; font-size: 16px; margin-bottom: 10px; }
 .grade { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
 label { display: flex; flex-direction: column; gap: 5px; font-weight: 600; font-size: 13px; color: #394150; }
-select, input[type=number] { font: inherit; font-weight: 400; padding: 9px 10px; border: 1px solid var(--borda);
+select, input[type=number], input[type=text], input[type=tel] { font: inherit; font-weight: 400; padding: 9px 10px; border: 1px solid var(--borda);
                              border-radius: 8px; background: #fff; color: var(--texto); }
 select:focus, input:focus { outline: 2px solid #fdba74; border-color: var(--primaria); }
 .dica { font-weight: 400; color: var(--suave); min-height: 1em; }
@@ -84,3 +84,10 @@ tfoot td { font-weight: 700; border-bottom: 0; }
 .detalhe .cartao { margin-bottom: 0; }
 .detalhe + .cartao { margin-top: 16px; }
 .vazio { color: var(--suave); }
+.status.concluida { background: var(--ok-fundo); color: var(--ok-texto); }
+.veiculo-linha { border: 1px solid var(--borda); border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; background: #fafbfc; }
+.veiculo-linha .topo-linha { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-weight: 700; }
+.botao.perigo { background: transparent; color: var(--erro-texto); border: 1px solid var(--borda); padding: 4px 10px; font-size: 13px; }
+.botao.perigo:hover { background: var(--erro-fundo); }
+.linha-status { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+.linha-status label { min-width: 240px; }
